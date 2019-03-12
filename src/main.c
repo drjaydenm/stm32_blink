@@ -5,20 +5,28 @@ int main ()
 	// Enable GPIOB peripheral
 	RCC->AHBENR |= RCC_AHBENR_GPIOBEN;
 
-	// Setup pin B3
-	GPIOB->MODER  &= ~(0x3 << (LED_PIN * 2));
-	GPIOB->MODER  |=  (0x1 << (LED_PIN * 2));
-	GPIOB->OTYPER &= ~(1 << LED_PIN);
+	// Setup pin B3 for output and push-pull
+	GPIOB->MODER &= ~GPIO_MODER_MODER3;
+	GPIOB->MODER |= GPIO_MODER_MODER3_0;
+    GPIOB->OTYPER &= ~GPIO_OTYPER_OT_3;
 
 	int counter = 0;
     while (1)
     {
-        for (int i = 0; i < 10000 + counter; i++)
-        {
-        	// sleep
-        }
-        counter += 1000;
+        // Turn on the LED
+        GPIOB->BSRR = (1 << 3);
+        delay(counter);
 
-        GPIOB->ODR ^= (1 << LED_PIN);
+        // Turn off the LED
+        GPIOB->BRR = (1 << 3);
+        delay(counter);
+
+        counter += 10000;
+    }
+}
+
+void delay(int count) {
+    for (int i = 0; i < count; i++) {
+        // sleep
     }
 }

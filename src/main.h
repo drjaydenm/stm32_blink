@@ -9,6 +9,6 @@
 	#include "stm32l0xx.h"
 #endif
 
-#define LED_PIN 3
+void delay(int count);
 
 #endif
